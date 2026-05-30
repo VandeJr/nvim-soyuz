@@ -60,6 +60,7 @@ With explicit options:
 require("soyuz").setup({
   treesitter = {
     enable = true,
+    highlight = true,
     parser_url = "https://github.com/VandeJr/tree-sitter-soyuz",
     branch = "main",
   },

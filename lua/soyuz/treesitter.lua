@@ -33,6 +33,18 @@ local function register_parser(opts)
   parser_config.soyuz = parser_definition(opts)
 end
 
+local function start_highlight(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if vim.bo[bufnr].filetype ~= "soyuz" then
+    return
+  end
+
+  local ok, err = pcall(vim.treesitter.start, bufnr, "soyuz")
+  if not ok then
+    vim.notify("nvim-soyuz: Tree-sitter highlight unavailable: " .. tostring(err), vim.log.levels.WARN)
+  end
+end
+
 function M.setup(opts)
   opts = opts or {}
 
@@ -47,6 +59,18 @@ function M.setup(opts)
       register_parser(opts)
     end,
   })
+
+  if opts.highlight ~= false then
+    vim.api.nvim_create_autocmd("FileType", {
+      group = group,
+      pattern = "soyuz",
+      callback = function(args)
+        start_highlight(args.buf)
+      end,
+    })
+
+    start_highlight(vim.api.nvim_get_current_buf())
+  end
 end
 
 return M

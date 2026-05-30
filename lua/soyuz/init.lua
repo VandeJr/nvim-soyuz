@@ -3,6 +3,7 @@ local M = {}
 local defaults = {
   treesitter = {
     enable = true,
+    highlight = true,
     parser_url = "https://github.com/VandeJr/tree-sitter-soyuz",
     branch = "main",
   },
